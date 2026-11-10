@@ -17,6 +17,14 @@ const DEBUG_GLOBE_TRAVEL = false;
 
 const chapters = ["Start", "About", "Systems", "Work", "Toolkit", "Contact"];
 
+function safeLinkedInUrl(value) {
+  try {
+    const url = new URL(value);
+    if (url.protocol === "https:" && (url.hostname === "linkedin.com" || url.hostname.endsWith(".linkedin.com"))) return url.toString();
+  } catch {}
+  return "https://www.linkedin.com/";
+}
+
 function SignalCore({ mountRef }) {
   return <div ref={mountRef} className="signal-core" role="img" aria-label="Interactive 3D visualization of a quality signal moving through connected systems" />;
 }
@@ -378,7 +386,7 @@ export default function Home() {
 
     <section className="toolkit chapter-section" id="toolkit"><div className="content-wrap"><div className="section-head" data-reveal><div className="chapter-tag">05 / HOW I WORK</div><p>TOOLS FOLLOW THE QUESTION.<br/>NOT THE OTHER WAY AROUND.</p></div><div className="tool-layout"><div className="tool-intro" data-reveal><h2>A practical<br/><em>toolkit.</em></h2><p>Select a tool to see where it fits in my work.</p><div className="selected-tool"><small>0{activeSkill+1} / CURRENTLY SELECTED</small><b>{skill[0]}</b><span>{skill[1]}</span></div></div><div className="tool-list" data-reveal>{portfolio.skills.map(([name],i)=><button className={activeSkill===i?"selected":""} key={name} onClick={()=>setActiveSkill(i)}><small>0{i+1}</small><b>{name}</b><ArrowUpRight size={16}/></button>)}</div></div><div className="experience-row" data-reveal><div className="chapter-tag">THE PATH SO FAR</div>{portfolio.experienceEntries.map((entry)=><div className="experience-entry" key={entry.year}><span>{entry.year}</span><div><b>{entry.role}</b><p>{entry.detail}</p></div></div>)}<div className="education-entry"><span>FOUNDATION</span><p>{portfolio.education}<br/>{portfolio.certifications}</p></div></div></div></section>
 
-    <section className="contact chapter-section" id="contact"><div className="contact-sun"/><div className="content-wrap contact-wrap"><div className="chapter-tag" data-reveal>06 / LET’S CONNECT</div><h2 data-reveal>Let’s make<br/>the next release<br/><em>feel certain.</em></h2><p data-reveal>If you’re working through a quality problem, an integration, or a tricky release, I’d be glad to talk.</p><div className="contact-links" data-reveal><a href={`mailto:${portfolio.contact.email}`} className="email-cta"><Mail size={17}/> EMAIL SANJAY <ArrowRight size={17}/></a><a href={portfolio.contact.linkedin} target="_blank" rel="noreferrer">LINKEDIN <ArrowUpRight size={15}/></a><button onClick={copyEmail}>{copied?<Check size={15}/>:<Copy size={15}/>} {copied?"COPIED":"COPY EMAIL"}</button></div><footer><span>SBV® / QA AUTOMATION ENGINEER</span><span>BUILT AROUND QUALITY / 2026</span><a className="admin-access" href="/admin">ADMIN</a><button onClick={()=>goTo("opening")}>BACK TO TOP ↑</button></footer></div></section>
+    <section className="contact chapter-section" id="contact"><div className="contact-sun"/><div className="content-wrap contact-wrap"><div className="chapter-tag" data-reveal>06 / LET’S CONNECT</div><h2 data-reveal>Let’s make<br/>the next release<br/><em>feel certain.</em></h2><p data-reveal>If you’re working through a quality problem, an integration, or a tricky release, I’d be glad to talk.</p><div className="contact-links" data-reveal><a href={`mailto:${portfolio.contact.email}`} className="email-cta"><Mail size={17}/> EMAIL SANJAY <ArrowRight size={17}/></a><a href={safeLinkedInUrl(portfolio.contact.linkedin)} target="_blank" rel="noreferrer">LINKEDIN <ArrowUpRight size={15}/></a><button onClick={copyEmail}>{copied?<Check size={15}/>:<Copy size={15}/>} {copied?"COPIED":"COPY EMAIL"}</button></div><footer><span>SBV® / QA AUTOMATION ENGINEER</span><span>BUILT AROUND QUALITY / 2026</span><a className="admin-access" href="/admin">ADMIN</a><button onClick={()=>goTo("opening")}>BACK TO TOP ↑</button></footer></div></section>
     <div className="cursor-orb" ref={cursorRef} aria-hidden="true"><span/><i/></div>
     {adminOpen && <div className="admin-overlay" role="dialog" aria-modal="true" aria-label="SBV Admin"><button className="admin-overlay-close" onClick={()=>setAdminOpen(false)}>CLOSE <X size={15}/></button><div className="admin-overlay-panel"><iframe title="SBV Admin" src="/admin/" /></div></div>}
   </main>;
